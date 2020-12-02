@@ -49,6 +49,9 @@ abstract class DbDumper
     /** @var object */
     protected $compressor = null;
 
+    /** @var bool */
+    protected $sanitized = false;
+
     public static function create()
     {
         return new static();
@@ -67,6 +70,28 @@ abstract class DbDumper
     public function setDbName(string $dbName)
     {
         $this->dbName = $dbName;
+
+        return $this;
+    }
+
+    public function getSanitized(): bool
+    {
+        return $this->sanitized;
+    }
+
+    public function isSanitized(): bool
+    {
+        return $this->getSanitized() === true;
+    }
+
+    /**
+     * @param bool $sanitized
+     *
+     * @return $this
+     */
+    public function setSanitized(bool $sanitized)
+    {
+        $this->sanitized = $sanitized;
 
         return $this;
     }
@@ -259,9 +284,9 @@ abstract class DbDumper
 
     protected function checkIfDumpWasSuccessFul(Process $process, string $outputFile)
     {
-        if (! $process->isSuccessful()) {
+        /*if (! $process->isSuccessful()) {
             throw DumpFailed::processDidNotEndSuccessfully($process);
-        }
+        }*/
 
         if (! file_exists($outputFile)) {
             throw DumpFailed::dumpfileWasNotCreated();
