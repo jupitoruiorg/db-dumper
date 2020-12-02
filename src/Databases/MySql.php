@@ -244,22 +244,22 @@ class MySql extends DbDumper
             "{$quote}{$this->dumpBinaryPath}mysqldump{$quote}",
         ];
 
-        if (! $this->dbNameWasSetAsExtraOption) {
-            $command[] = $this->dbName;
+        if (!$this->isSanitized()) {
+            $command[] = "--defaults-extra-file=\"{$temporaryCredentialsFile}\"";
         }
 
-
-        if (! empty($this->includeTables)) {
-            $includeTables = implode(' ', $this->includeTables);
-
-            if ($this->isSanitized()) {
-                $command[] = "{$includeTables}";
-            } else {
-                $command[] = "--tables {$includeTables}";
-            }
-        }
 
         if ($this->isSanitized()) {
+
+            if (! $this->dbNameWasSetAsExtraOption) {
+                $command[] = $this->dbName;
+            }
+
+            if (! empty($this->includeTables)) {
+                $includeTables = implode(' ', $this->includeTables);
+                $command[] = "{$includeTables}";
+            }
+
             if ($this->userName) {
                 $command[] = "--user={$this->userName}";
             }
@@ -275,8 +275,6 @@ class MySql extends DbDumper
             if ($this->port) {
                 $command[] = "--port={$this->port}";
             }
-        } else {
-            $command[] = "--defaults-extra-file=\"{$temporaryCredentialsFile}\"";
         }
 
 
@@ -324,6 +322,17 @@ class MySql extends DbDumper
 
         if ($this->setGtidPurged !== 'AUTO') {
             $command[] = '--set-gtid-purged='.$this->setGtidPurged;
+        }
+
+        if (!$this->isSanitized()) {
+            if (! $this->dbNameWasSetAsExtraOption) {
+                $command[] = $this->dbName;
+            }
+
+            if (! empty($this->includeTables)) {
+                $includeTables = implode(' ', $this->includeTables);
+                $command[] = "--tables {$includeTables}";
+            }
         }
 
         foreach ($this->extraOptionsAfterDbName as $extraOptionAfterDbName) {

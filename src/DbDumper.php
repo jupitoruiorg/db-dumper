@@ -89,9 +89,9 @@ abstract class DbDumper
      *
      * @return $this
      */
-    public function setSanitized(bool $sanitized)
+    public function setSanitized()
     {
-        $this->sanitized = $sanitized;
+        $this->sanitized = true;
 
         return $this;
     }
