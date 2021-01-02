@@ -2,6 +2,7 @@
 
 namespace Spatie\DbDumper;
 
+use Carbon\Carbon;
 use Spatie\DbDumper\Compressors\Compressor;
 use Spatie\DbDumper\Compressors\GzipCompressor;
 use Spatie\DbDumper\Exceptions\CannotSetParameter;
@@ -52,6 +53,18 @@ abstract class DbDumper
     /** @var bool */
     protected $sanitized = false;
 
+    /** @var bool */
+    protected $filter_week = false;
+
+    /** @var bool */
+    protected $filter_month = false;
+
+    /** @var null  */
+    protected $filter_start_date = null;
+
+    /** @var null  */
+    protected $filter_end_date = null;
+
     public static function create()
     {
         return new static();
@@ -94,6 +107,71 @@ abstract class DbDumper
         $this->sanitized = true;
 
         return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function setFilterWeek()
+    {
+        $this->filter_week = true;
+
+        return $this;
+    }
+
+    public function getFilterWeek(): bool
+    {
+        return $this->filter_week;
+    }
+
+
+    /**
+     * @return $this
+     */
+    public function setFilterMonth()
+    {
+        $this->filter_month = true;
+
+        return $this;
+    }
+
+    public function getFilterMonth(): bool
+    {
+        return $this->filter_month;
+    }
+
+    /**
+     * @param $filter_start_date
+     *
+     * @return $this
+     */
+    public function setFilterStartDate($filter_start_date)
+    {
+        $this->filter_start_date = $filter_start_date;
+
+        return $this;
+    }
+
+    public function getFilterStartDate(): string
+    {
+        return $this->filter_start_date;
+    }
+
+    /**
+     * @param $filter_end_date
+     *
+     * @return $this
+     */
+    public function setFilterEndDate($filter_end_date)
+    {
+        $this->filter_end_date = $filter_end_date;
+
+        return $this;
+    }
+
+    public function getFilterEndDate(): string
+    {
+        return $this->filter_end_date;
     }
 
     /**

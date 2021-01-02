@@ -316,6 +316,10 @@ class MySql extends DbDumper
             $command[] = '--default-character-set='.$this->defaultCharacterSet;
         }
 
+        if ($this->getFilterWeek() || $this->getFilterMonth()) {
+            $this->addExtraOption('--where="(DATE(created_at) >= \'' . $this->getFilterStartDate() . '\' and DATE(created_at) <= \'' . $this->getFilterEndDate() . '\')"');
+        }
+
         foreach ($this->extraOptions as $extraOption) {
             $command[] = $extraOption;
         }
