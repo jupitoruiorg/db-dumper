@@ -15,7 +15,7 @@ class MySql extends DbDumper
     protected $useExtendedInserts = true;
 
     /** @var bool */
-    protected $useSingleTransaction = false;
+    protected $useSingleTransaction = true;
 
     /** @var bool */
     protected $skipLockTables = false;
@@ -24,7 +24,7 @@ class MySql extends DbDumper
     protected $doNotUseColumnStatistics = false;
 
     /** @var bool */
-    protected $useQuick = false;
+    protected $useQuick = true;
 
     /** @var string */
     protected $defaultCharacterSet = '';
@@ -319,6 +319,7 @@ class MySql extends DbDumper
         if ($this->getFilterWeek() || $this->getFilterMonth()) {
             $this->addExtraOption('--where="(DATE(created_at) >= \'' . $this->getFilterStartDate() . '\' and DATE(created_at) <= \'' . $this->getFilterEndDate() . '\')"');
         }
+
 
         foreach ($this->extraOptions as $extraOption) {
             $command[] = $extraOption;
